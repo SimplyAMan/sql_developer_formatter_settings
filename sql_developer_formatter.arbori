@@ -425,7 +425,11 @@ _extraBrkBefore:
 | [node) having_clause 
 | [node) order_by_clause 
 | [node) row_limiting_clause
-| [node) model_clause 
+| [node) model_clause 
+------------------------------------------------------------
+-- my: add one line, start value_clause from new line
+------------------------------------------------------------
+| [node) values_clause
 | [node) segment_attributes_clause & ![node^) segment_attributes_clause
 | :breaksBeforeComma &  [node+1) alias_in_out_constraints           & [node) ','
 | :breaksBeforeComma &  [node+1) select_term           & [node) ','
@@ -655,7 +659,9 @@ _paddedIdsInScope1: (
 | [id) comparison_condition  & [id+1) 'THEN' & [id+2) expr & [scope) case_expression
 | [id) expr  & [id+1) 'THEN' & [id+2) expr & [scope) case_expression
 | :alignTabColAliases  & [id) column & [id+1) as_alias & [scope) select_clause
--- my аліас після назви таблиці не потрібно вирівнювати за допомогою табуляції
+------------------------------------------------------------
+-- my: comment, alias after table name shoudn't be padded
+------------------------------------------------------------
 --| :alignTabColAliases  & [id) query_table_expression & [id+1) identifier & [scope) from_clause
 --
 --| [id) constrained_type & [id+1) default_expr_opt & [scope) decl_list
