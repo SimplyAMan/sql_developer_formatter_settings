@@ -655,7 +655,8 @@ _paddedIdsInScope1: (
 | [id) comparison_condition  & [id+1) 'THEN' & [id+2) expr & [scope) case_expression
 | [id) expr  & [id+1) 'THEN' & [id+2) expr & [scope) case_expression
 | :alignTabColAliases  & [id) column & [id+1) as_alias & [scope) select_clause
-| :alignTabColAliases  & [id) query_table_expression & [id+1) identifier & [scope) from_clause
+-- my аліас після назви таблиці не потрібно вирівнювати за допомогою табуляції
+--| :alignTabColAliases  & [id) query_table_expression & [id+1) identifier & [scope) from_clause
 --
 --| [id) constrained_type & [id+1) default_expr_opt & [scope) decl_list
 ) & scope < id & predecessor = id & follower = id+1
