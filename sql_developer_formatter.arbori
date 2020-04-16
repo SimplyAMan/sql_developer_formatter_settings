@@ -29,6 +29,10 @@ simpleIndentConditions:
 | :breaksProcArgs & [node) arg_list & [node^) paren_expr_list & [node-1) arg
 --| :breaksProcArgs & [node) ',' & [node^) arg_list & [node+1) arg
 | [node) array_ty_def
+------------------------------
+-- my: start each fuction param from new line
+------------------------------
+| [node) assoc_arg    
 | [node) attr_dim_hierarchy 
 | [node) attribute_clause 
 | [node) autoextend_clause 
@@ -172,8 +176,8 @@ simpleIndentConditions:
 | :indentConditions & [node) pls_expr &  [node-1) 'WHEN'
 | :indentActions    & [node) pls_expr &  [node-1) 'THEN'
 | [node) privilege_audit_clause 
-| [node) parm_list_opt &  [node^) fml_part  
-| [node) prm_spec &       [node^) fml_part  
+| [node) parm_list_opt &  [node^) fml_part
+| [node) prm_spec &       [node^) fml_part
 | [node) query_partition_clause --& [node^) analytic_clause
 | [node) range_values_clause 
 | [node) record_format 
@@ -425,10 +429,10 @@ _extraBrkBefore:
 | [node) having_clause 
 | [node) order_by_clause 
 | [node) row_limiting_clause
-| [node) model_clause 
+| [node) model_clause 
 ------------------------------------------------------------
--- my: add one line, start value_clause from new line
-------------------------------------------------------------
+-- my: start value_clause from new line
+------------------------------------------------------------
 | [node) values_clause
 | [node) segment_attributes_clause & ![node^) segment_attributes_clause
 | :breaksBeforeComma &  [node+1) alias_in_out_constraints           & [node) ','
@@ -473,6 +477,10 @@ _extraBrkBefore:
 | [node) 'VALUES' & [node^) merge_insert_clause 
 | [node) 'SET'    & [node^) merge_update_clause 
 | [node) case_stmt_alt
+------------------------------------------------------------
+-- my: start returning_clause from new line
+------------------------------------------------------------
+| [node) returning_clause 
 | [node) simple_case_expression[4,27)#
 | :breakAfterConditions & [node) 'THEN'
 ;
@@ -649,8 +657,12 @@ _paddedIdsInScope1: (
 | :alignTypeDecl & ( :breaksAfterComma | :breaksBeforeComma ) & [id) decl_id & ([id+1) constrained_type | [id+1) object_d_rhs) & [scope) decl_list
 | :alignTypeDecl & ( :breaksAfterComma | :breaksBeforeComma ) & [id) decl_id & ([id+1) constrained_type | [id+1) object_d_rhs) & [scope) rec_ty_def
 | :alignTypeDecl & ( :breaksAfterComma | :breaksBeforeComma ) & [id) mode & [id+1) unconstrained_type  & [scope) subprg_spec
--- =>
-| :breaksProcArgs & :alignNamedArgs & [id) sim_expr & [id+1) '=' & [id+2) '>' & [scope) paren_expr_list
+-- =>
+------------------------------------------------------------
+-- my: add padding before '=>' in invoking function/procedure
+------------------------------------------------------------
+| [id) arith_expr & [id+1) '=' & [id+2) '>' & [scope) paren_expr_list
+| :breaksProcArgs & :alignNamedArgs & [id) sim_expr & [id+1) '=' & [id+2) '>' & [scope) paren_expr_list
 -- :=
 | :alignAssignments & [id) name & [id+1) ':' & [id+2) '=' & [scope) seq_of_stmts
 -- =
@@ -659,8 +671,8 @@ _paddedIdsInScope1: (
 | [id) comparison_condition  & [id+1) 'THEN' & [id+2) expr & [scope) case_expression
 | [id) expr  & [id+1) 'THEN' & [id+2) expr & [scope) case_expression
 | :alignTabColAliases  & [id) column & [id+1) as_alias & [scope) select_clause
-------------------------------------------------------------
--- my: comment, alias after table name shoudn't be padded
+------------------------------------------------------------
+-- my: comment, alias after table name shoudn't be padded
 ------------------------------------------------------------
 --| :alignTabColAliases  & [id) query_table_expression & [id+1) identifier & [scope) from_clause
 --
